@@ -1,4 +1,4 @@
-package org.example.chap04;
+package org.example.chap04.stack;
 
 class Node<E> {
 
