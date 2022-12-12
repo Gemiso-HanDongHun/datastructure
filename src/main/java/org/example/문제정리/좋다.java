@@ -1,4 +1,4 @@
-package org.example.chap03;
+package org.example.문제정리;
 
 import java.util.Arrays;
 import java.util.Scanner;

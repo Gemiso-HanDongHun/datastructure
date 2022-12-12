@@ -1,4 +1,4 @@
-package org.example.chap03;
+package org.example.문제정리;
 
 // 백준  https://www.acmicpc.net/problem/1940
 
