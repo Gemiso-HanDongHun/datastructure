@@ -65,7 +65,7 @@ public class FilteringApple {
      * @solution - try 4: 타입을 Apple에서 제너릭타입으로 교체
      */
 
-    public <T>List<T> filter(List<T> inventory, Predicate<T> predicate) {   // 문법으로 return 타입앞에 <T>를 적어야한다
+    public static <T> List<T> filter(List<T> inventory, Predicate<T> predicate) {   // 문법으로 return 타입앞에 <T>를 적어야한다
         List<T> resultList = new ArrayList<>();
         for (T t : inventory) {
             if (predicate.test(t)) {

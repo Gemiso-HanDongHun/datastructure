@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static java.util.Locale.filter;
 import static org.example.lambda.advance.Apple.Color.GREEN;
 import static org.example.lambda.advance.Apple.Color.RED;
 import static org.example.lambda.advance.Book.Genre.*;
@@ -27,14 +26,14 @@ class FilteringAppleTest {
         inventory.add(new Apple(50, RED));
 
         //녹색사과만 필터링해주세요
-//        List<Apple> l = filterGreenApples(inventory);
-
+        List<Apple> l = filterGreenApples(inventory);
+//
 //        List<Apple> l = filterApplesByColor(inventory, RED);
-
-        List<Apple> l = filterApples(inventory, apple -> apple.getWeight() > 150&&apple.getColor()==RED);
-        for (Apple apple : l) {
-            System.out.println(apple);
-        }
+//
+//        List<Apple> l = filterApples(inventory, apple -> apple.getWeight() > 150&&apple.getColor()==RED);
+//        for (Apple apple : l) {
+//            System.out.println(apple);
+//        }
 
         //범용 메서드 filter 사용
         List<Book> bookList = new ArrayList<>();
@@ -49,16 +48,16 @@ class FilteringAppleTest {
                 )
         );
 
-//        List<Book> books = filter(bookList, b -> b.getGenre() == COMICS);
-//        List<Apple> ap = filter(inventory, a -> a.getWeight() < 100);
+        List<Book> books = filter(bookList, b -> b.getGenre() == COMICS);
+        List<Apple> ap = filter(inventory, a -> a.getWeight() < 100);
         // 정수 리스트
         List<Integer> numbers = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
 
         // 홀수만 필터링
-//        List<Integer> integers = filter(numbers, n -> n % 3 == 0);
-////        for (Integer n : integers) {
-////            System.out.println(n);
-//        }
+        List<Integer> integers = filter(numbers, n -> n % 3 == 0);
+        for (Integer n : integers) {
+            System.out.println(n);
+        }
 
         List<Integer> integerList = numbers.stream()
                 .filter(n -> n % 2 == 0)
