@@ -19,8 +19,18 @@ class CalculatorTest {
         System.out.println("r1 = " + r1);
 
         Calculator multiCalc = (n1, n2) -> n1 * n2;
-        int r2 = addCalc.calc(10, 20);
+        int r2 = multiCalc.calc(10, 20);
         System.out.println("r2 = " + r2);
+
+        Operator op = new Operator(10, 20);
+
+        op.operate(addCalc);
+
+        int r3 = op.operate((n1, n2) -> n1 - n2);
+        System.out.println("r3 = " + r3);
+
+        int r4 = op.operate((n1, n2) -> n1 % n2);
+        System.out.println("r4 = " + r4);
 
 
 //        Calculator casio = new CasioCalculator();
