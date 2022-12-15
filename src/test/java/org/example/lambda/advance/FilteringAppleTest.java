@@ -5,9 +5,11 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.util.Comparator.comparing;
 import static org.example.lambda.advance.Apple.Color.GREEN;
 import static org.example.lambda.advance.Apple.Color.RED;
 import static org.example.lambda.advance.Book.Genre.*;
@@ -16,7 +18,7 @@ import static org.example.lambda.advance.FilteringApple.*;
 class FilteringAppleTest {
 
     @Test
-    void tt(){
+    void tt() {
         List<Apple> inventory = new ArrayList<>();
         inventory.add(new Apple(80, GREEN));
         inventory.add(new Apple(155, GREEN));
@@ -51,7 +53,7 @@ class FilteringAppleTest {
         List<Book> books = filter(bookList, b -> b.getGenre() == COMICS);
         List<Apple> ap = filter(inventory, a -> a.getWeight() < 100);
         // 정수 리스트
-        List<Integer> numbers = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
         // 홀수만 필터링
         List<Integer> integers = filter(numbers, n -> n % 3 == 0);
@@ -63,6 +65,35 @@ class FilteringAppleTest {
                 .filter(n -> n % 2 == 0)
                 .collect(Collectors.toList());
         System.out.println(integerList);
+    }
+
+    @Test
+    void sortTest() {
+        List<Apple> inventory = new ArrayList<>();
+        inventory.add(new Apple(80, GREEN));
+        inventory.add(new Apple(155, GREEN));
+        inventory.add(new Apple(120, RED));
+        inventory.add(new Apple(90, GREEN));
+        inventory.add(new Apple(110, RED));
+        inventory.add(new Apple(50, RED));
+
+        // 정렬
+//        inventory.sort(new Comparator<Apple>() {
+//            @Override
+//            public int compare(Apple o1, Apple o2) {
+//                return o1.getWeight() - o2.getWeight();
+//            }
+//        });
+        
+        // 무게 오름차 정렬
+        inventory.sort(comparing(Apple::getWeight));
+        
+        // 무게 내림차 정렬
+        inventory.sort(comparing(Apple::getWeight).reversed());
+
+
+        inventory.forEach(System.out::println);
+
     }
 
 }
