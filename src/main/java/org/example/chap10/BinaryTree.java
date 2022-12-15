@@ -109,8 +109,55 @@ public class BinaryTree {
         }
     }
 
+    //===================== 탐색 ===================//
+
+    public Node find(int targetData) {
+
+        Node current = root;
+
+        while (true) {
+            if (current == null) return null; // 탐색 실패
+
+            // 찾는 값이 현재 노드의 값보다 작은 경우
+            if (targetData < current.getKey()) {
+                current = current.getLeftChild();
+            } else if (targetData > current.getKey()) {
+                current = current.getRightChild();
+            } else {
+                return current; // 탐색 성공
+            }
+        }
+
+    }
+
+    //============ 최대, 최소값 탐색 =================//
+    public Node findMin() {
+        if (isEmpty()) return null; // 탐색 실패
+
+        Node current = root;
+        while (current.getLeftChild() != null) {
+            current = current.getLeftChild();
+        }
+        return current;
+    }
+
+    public Node findMax() {
+        if (isEmpty()) return null; // 탐색 실패
+
+        Node current = root;
+        while (current.getRightChild() != null) {
+            current = current.getRightChild();
+        }
+        return current;
+    }
+
     public Node getRoot() {
 
         return root;
     }
+
+    public boolean isEmpty() {
+        return root == null;
+    }
+
 }

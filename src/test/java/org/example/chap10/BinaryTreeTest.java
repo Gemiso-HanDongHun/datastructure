@@ -8,7 +8,12 @@ class BinaryTreeTest {
 
     @Test
     void traverse() {
+
+
+
         BinaryTree tree = new BinaryTree();
+
+
 
         /*
                               50
