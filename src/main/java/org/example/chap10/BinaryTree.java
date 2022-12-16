@@ -1,5 +1,8 @@
 package org.example.chap10;
 
+import java.lang.annotation.Target;
+import java.util.Stack;
+
 class Node {
     private int key; // 트리의 키 (데이터)
     private Node leftChild; // 왼쪽 자식
@@ -37,6 +40,7 @@ class Node {
     public String toString() {
         return String.format("[ %d ]", key);
     }
+
 }
 
 public class BinaryTree {
@@ -151,13 +155,190 @@ public class BinaryTree {
         return current;
     }
 
-    public Node getRoot() {
-
-        return root;
-    }
-
     public boolean isEmpty() {
         return root == null;
     }
 
+    //================ 삭제 ===================//
+    public boolean delete(int target) {
+        // 삭제 대상 노드와 그 노드의 부모노드를 탐색
+        Node current = root;
+        Node parent = current;
+
+        // 노드 탐색
+        while (target != current.getKey()) {
+            if (current == null) return false;
+
+            parent = current;
+            if (target < current.getKey()) {
+                current = current.getLeftChild();
+            } else {
+                current = current.getRightChild();
+            }
+        }
+
+        // 삭제 진행
+        // 1. 삭제 대상노드의 자식이 없는 경우
+        if (current.getLeftChild() == null && current.getRightChild() == null) {
+            if (current == root) {  // 삭제 타겟이 루트
+                root = null;
+
+                // 삭제 타겟이 오른쪽 자식이다.
+            } else if (current == parent.getRightChild()) {
+                parent.setRightChild(null);
+
+            } else {
+                parent.setLeftChild(null);
+
+            }
+        }
+        // 2-1. 삭제 대상 노드의 자식이 하나인 경우 - 왼쪽자식을 가지고 있을 경우
+        else if (current.getRightChild() == null) {
+
+            // 삭제 대상이 루트
+            if (current == root) {
+                root = current.getLeftChild();
+            }
+
+            // 삭제 대상이 부모의 왼쪽 자식일 경우
+            else if (current == parent.getLeftChild()) {
+
+                // 부모의 새로운 왼쪽 자식으로 삭제 대상의 왼쪽 자식을 연결
+                parent.setLeftChild(current.getLeftChild());
+            }
+            // 삭제대상이 부모의 오른쪽 자식일 경우
+            else {
+                parent.setRightChild(current.getLeftChild());
+            }
+        }
+
+        // 2-2. 삭제 대상 노드의 자식이 하나인 경우 - 오른쪽 자식인 경우
+        else if (current.getLeftChild() == null) {
+
+            // 삭제 대상이 루트
+            if (current == root) {
+
+                // 삭제대상이 부모의 왼쪽자식인 경우
+            } else if (current == parent.getLeftChild()) {
+
+                // 부모의 새로운 왼쪽자식으로 삭제대상의 자식을 연결
+                parent.setLeftChild(current.getRightChild());
+
+                // 삭제대상이 부모의 오른쪽 자식인 경우
+            } else {
+
+                // 부모의 새로운 오른쪽자식으로 삭제대상의 자식을 연결
+                parent.setRightChild(current.getRightChild());
+            }
+        }
+
+        // 3-1. 삭제대상의 자식이 둘일 때
+        else {
+
+            // 삭제노드를 대신할 후보노드를 탐색
+            Node candidate = getCandidate(current);
+
+            if (current == root) {
+                root = candidate;
+                candidate.setLeftChild(current.getLeftChild());
+            }
+
+            // 삭제대상 노드가 부모의 오른쪽인 경우
+            else if (current == root.getRightChild()) {
+
+                // 3-1. 단계 1,  3-2. 단계 3
+                parent.setRightChild(candidate);
+
+            } else {
+                // 3-1. 단계 1, 3-2. 단계 3
+                parent.setLeftChild(candidate);
+            }
+
+            // 3-1. 단계 2, 3-2. 단계 4
+            candidate.setLeftChild(current.getLeftChild());
+        }
+
+        return true;
+    }
+
+    // 후보노드 찾기
+    private Node getCandidate(Node current) {
+
+        // 후보노드의 부모
+        Node candidateParent = current;
+
+        // 후보노드
+        Node candidate = current.getRightChild();
+
+        // 삭제노드의 오른쪽자식의 가장 왼쪽 자식 찾기
+        while (candidate.getLeftChild() != null) {
+            candidateParent = candidate;
+            candidate = candidate.getLeftChild();
+        }
+
+        // 후보노드가 삭제노드 왼쪽 자식일 때
+        if (candidate != current.getRightChild()) {
+
+            // 3-2. 단계 1
+            // 후보노드의 오른쪽자식을 후보노드의 부모노드의 왼쪽으로 대체
+            candidateParent.setLeftChild(candidate.getRightChild());
+
+            // 3-2. 단계2
+            // 후보노드의 부모를 후보노드의 오른쪽 자식으로 만든다
+            candidate.setRightChild((candidateParent));
+        }
+
+        return candidate;
+    }
+
+    //================= 트리 출력 ======================//
+    public void display() {
+        Stack<Node> globalStack = new Stack<>();
+        globalStack.push(root);
+
+        int blank = 32;
+        boolean isRowEmpty = false;
+
+        while (!isRowEmpty) {
+            Stack<Node> localStack = new Stack<>();
+            isRowEmpty = true;
+
+            for (int i = 0; i < blank; i++) {
+                System.out.print(" ");
+            }
+
+            while (!globalStack.isEmpty()) {
+                Node temp = globalStack.pop();
+
+                if (temp != null) {
+                    System.out.print(temp.getKey());
+                    localStack.push(temp.getLeftChild());
+                    localStack.push(temp.getRightChild());
+
+                    if (temp.getLeftChild() != null || temp.getRightChild() != null) {
+                        isRowEmpty = false;
+                    }
+                } else {
+                    System.out.print("**");
+                    localStack.push(null);
+                    localStack.push(null);
+                }
+                for (int i = 0; i < blank * 2 - 2; i++) {
+                    System.out.print(" ");
+                }
+            }
+            System.out.println();
+            blank /= 2;
+
+            while (!localStack.isEmpty()) {
+                globalStack.push(localStack.pop());
+            }
+        }
+        System.out.println();
+    }
+
+    public Node getRoot() {
+
+        return root;
+    }
 }
