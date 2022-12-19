@@ -43,7 +43,6 @@ public class ABCDE {
     4. 모든 노드를 돌아도 1이 리턴되지 않았다면 0을 리턴하고 종료
  */
 
-
     static List<List<Integer>> adjList = new LinkedList<>(); // 그래프 인접 리스트
     static boolean[] visited;  // 방문 배열
 
